@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
-import { db, auth } from '@/lib/firebase';
-import { collection, query, where, getDocs, doc, getDoc, addDoc, serverTimestamp } from 'firebase/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,7 +10,7 @@ import { MessageSquare, Send, Mail, User, HelpCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function Contact() {
-  const [user] = useAuthState(auth);
+  const { user } = useAuth();
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,13 +19,18 @@ export default function Contact() {
     e.preventDefault();
     setLoading(true);
     try {
-      await addDoc(collection(db, 'messages'), {
+      // Mocking the message submission since Firebase is removed
+      console.log('Message submitted:', {
         userId: user?.uid || 'anonymous',
         email: user?.email || 'anonymous',
         subject,
         message,
-        createdAt: serverTimestamp(),
+        createdAt: new Date(),
       });
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       toast.success('Message sent! We will get back to you soon.');
       setSubject('');
       setMessage('');
@@ -97,7 +100,7 @@ export default function Contact() {
                     <Label htmlFor="name">Name</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                      <Input id="name" placeholder="Your name" className="pl-10" defaultValue={user?.displayName || ''} />
+                      <Input id="name" placeholder="Your name" className="pl-10" defaultValue={user?.fullName || ''} />
                     </div>
                   </div>
                   <div className="space-y-2">

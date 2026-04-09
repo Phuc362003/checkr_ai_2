@@ -1,5 +1,3 @@
-import { serverTimestamp } from 'firebase/firestore';
-
 export interface UserProfile {
   uid: string;
   email: string;
