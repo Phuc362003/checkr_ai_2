@@ -1,0 +1,5 @@
+{
+  "name": "CheckR",
+  "description": "A professional job seeker platform featuring eKYC verification, job applications, and personalized career suggestions.",
+  "requestFramePermissions": ["camera"]
+}
